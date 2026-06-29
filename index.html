@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麦乐导演 | AI影视创作者</title>
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  background: var(--bg-body);
+  font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  color: var(--text-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+video { display: block; max-width: 100%; }
+
+/* ===== Theme Variables ===== */
+:root {
+  /* Backgrounds */
+  --bg-body: #0a0a0a;
+  --bg-section: #0c0c0c;
+  --bg-card: #0f0f0f;
+  --bg-modal: #141414;
+  --bg-pos-cover: #111;
+  --bg-tag: rgba(255,255,255,0.04);
+  --bg-card-hover: rgba(255,255,255,0.015);
+
+  /* Text */
+  --text-primary: #fff;
+  --text-body: #e0e0e0;
+  --text-secondary: #ddd;
+  --text-tertiary: #ccc;
+  --text-muted: #999;
+  --text-dim: #888;
+  --text-faint: #777;
+  --text-very-faint: #666;
+  --text-subtle: #555;
+  --text-shadow: #444;
+  --text-link: #aaa;
+
+  /* Borders */
+  --border-light: rgba(255,255,255,0.04);
+  --border-dim: rgba(255,255,255,0.05);
+  --border-subtle: rgba(255,255,255,0.06);
+  --border-muted: rgba(255,255,255,0.08);
+  --border-visible: rgba(255,255,255,0.1);
+  --border-hover: rgba(255,255,255,0.15);
+  --border-active: rgba(180,170,255,0.25);
+  --border-active-strong: rgba(180,170,255,0.4);
+  --border-focus: rgba(180,170,255,0.5);
+  --border-focus-strong: rgba(180,170,255,0.8);
+
+  /* Gradients */
+  --grad-major: linear-gradient(135deg, #c0c0e0 0%, #ececff 35%, #ffffff 55%, #d0d0f0 100%);
+  --grad-medium: linear-gradient(135deg, #c8c8d8 0%, #ededf5 35%, #ffffff 55%, #d4d4e4 100%);
+  --grad-subtle: linear-gradient(135deg, #b0b0c0 0%, #d5d5e0 40%, #c0c0d0 100%);
+  --grad-nav: linear-gradient(135deg, #9e9eb0 0%, #c5c5d5 50%, #a5a5b5 100%);
+  --grad-brand: linear-gradient(135deg, #c0c0ff 0%, #ffffff 50%, #a0a0e0 100%);
+
+  /* Overlays */
+  --overlay-hero: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.7) 100%);
+  --overlay-card: linear-gradient(transparent 35%, rgba(0,0,0,0.88) 100%);
+  --overlay-modal: rgba(0,0,0,0.92);
+
+  /* Navbar */
+  --nav-bg-scrolled: rgba(10,10,10,0.92);
+  --nav-border: rgba(255,255,255,0.05);
+
+  /* Misc */
+  --divider: #333;
+  --pillar-border: #2a2a2a;
+  --placeholder-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  --placeholder-color: #333;
+  --pos-placeholder: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+
+  /* Contact icon */
+  --contact-icon-stroke: #999;
+  --contact-icon-hover: #ccc;
+
+  /* Showcase */
+  --showcase-brightness: 0.85;
+  --showcase-brightness-hover: 1.05;
+
+  /* Theme button */
+  --theme-btn-bg: rgba(255,255,255,0.06);
+  --theme-btn-border: rgba(255,255,255,0.1);
+  --theme-btn-color: #ccc;
+}
+
+/* ===== Light Theme ===== */
+[data-theme="light"] {
+  --bg-body: #f5f5f7;
+  --bg-section: #fafafa;
+  --bg-card: #ffffff;
+  --bg-modal: #ffffff;
+  --bg-pos-cover: #f0f0f0;
+  --bg-tag: rgba(0,0,0,0.04);
+  --bg-card-hover: rgba(0,0,0,0.01);
+
+  --text-primary: #1d1d1f;
+  --text-body: #333;
+  --text-secondary: #444;
+  --text-tertiary: #555;
+  --text-muted: #666;
+  --text-dim: #777;
+  --text-faint: #888;
+  --text-very-faint: #999;
+  --text-subtle: #aaa;
+  --text-shadow: #bbb;
+  --text-link: #888;
+
+  --border-light: rgba(0,0,0,0.04);
+  --border-dim: rgba(0,0,0,0.06);
+  --border-subtle: rgba(0,0,0,0.08);
+  --border-muted: rgba(0,0,0,0.1);
+  --border-visible: rgba(0,0,0,0.12);
+  --border-hover: rgba(0,0,0,0.18);
+  --border-active: rgba(100,90,180,0.25);
+  --border-active-strong: rgba(100,90,180,0.45);
+  --border-focus: rgba(100,90,180,0.5);
+  --border-focus-strong: rgba(100,90,180,0.8);
+
+  --grad-major: linear-gradient(135deg, #2a2a2a 0%, #111 35%, #000 55%, #1a1a1a 100%);
+  --grad-medium: linear-gradient(135deg, #3a3a3a 0%, #222 35%, #111 55%, #2a2a2a 100%);
+  --grad-subtle: linear-gradient(135deg, #444 0%, #333 40%, #3a3a3a 100%);
+  --grad-nav: linear-gradient(135deg, #555 0%, #444 50%, #4a4a4a 100%);
+  --grad-brand: linear-gradient(135deg, #3a3a50 0%, #1a1a2a 50%, #2a2a3e 100%);
+
+  --overlay-hero: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.18) 100%);
+  --overlay-card: linear-gradient(transparent 35%, rgba(255,255,255,0.9) 100%);
+  --overlay-modal: rgba(255,255,255,0.95);
+
+  --nav-bg-scrolled: rgba(245,245,247,0.94);
+  --nav-border: rgba(0,0,0,0.08);
+
+  --divider: #d0d0d0;
+  --pillar-border: #d5d5d5;
+  --placeholder-bg: linear-gradient(135deg, #e8e8f0 0%, #d8d8e8 50%, #c8c8e0 100%);
+  --placeholder-color: #bbb;
+  --pos-placeholder: linear-gradient(135deg, #e8e8f0 0%, #d8d8e8 100%);
+
+  --contact-icon-stroke: #888;
+  --contact-icon-hover: #555;
+
+  --showcase-brightness: 1.0;
+  --showcase-brightness-hover: 1.1;
+
+  --theme-btn-bg: rgba(0,0,0,0.04);
+  --theme-btn-border: rgba(0,0,0,0.1);
+  --theme-btn-color: #555;
+}
+
+/* Theme Transitions */
+body, .navbar, .section, .hero-overlay, .work-card, .modal-card, .modal-overlay,
+.contact-card, .identity-card, .positioning-card, .pillar-item, .vision-item,
+.about-section, .contact-section, .footer, .filter-btn, .hero-tags span,
+.thumb-panel, .work-card-overlay, .about-tagline, .cta-tagline {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease,
+              box-shadow 0.4s ease, background 0.4s ease;
+}
+
+
+/* ===== Typography ===== */
+.section-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.5rem;
+}
+.section-title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 250;
+  letter-spacing: 0.03em;
+  background: var(--grad-major);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.2rem;
+}
+.section-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  font-weight: 300;
+  max-width: 600px;
+  margin: 0 auto;
+  letter-spacing: 0.04em;
+}
+
+
+/* ===== Theme Toggle Button ===== */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--theme-btn-border);
+  background: var(--theme-btn-bg);
+  color: var(--theme-btn-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+.theme-toggle:hover {
+  border-color: var(--border-active-strong);
+  box-shadow: 0 0 16px rgba(160,140,255,0.2);
+  transform: rotate(15deg);
+}
+.theme-toggle:active {
+  transform: rotate(30deg) scale(0.92);
+}
+.icon-sun, .icon-moon {
+  transition: opacity 0.3s ease, transform 0.5s ease;
+  position: absolute;
+}
+/* Dark theme: show sun (switch to light) */
+:root .icon-sun { opacity: 1; transform: rotate(0deg); }
+:root .icon-moon { opacity: 0; transform: rotate(-90deg); }
+/* Light theme: show moon (switch to dark) */
+[data-theme="light"] .icon-sun { opacity: 0; transform: rotate(90deg); }
+[data-theme="light"] .icon-moon { opacity: 1; transform: rotate(0deg); }
+/* Mobile adjustment */
+@media (max-width: 768px) {
+  .theme-toggle { width: 34px; height: 34px; }
+  .theme-toggle svg { width: 16px; height: 16px; }
+  .nav-right { gap: 0.5rem; }
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.8rem 3.5rem;
+  transition: all 0.4s ease;
+  mix-blend-mode: difference;
+}
+.navbar .logo {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  background: var(--grad-medium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.navbar .nav-links { display: flex; gap: 2.5rem; }
+.navbar .nav-links a {
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  background: var(--grad-nav);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: color 0.3s, opacity 0.3s;
+  position: relative;
+}
+.navbar .nav-links a:hover { -webkit-text-fill-color: var(--text-primary); color: var(--text-primary); }
+.navbar .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--text-primary);
+  transition: width 0.3s ease;
+}
+.navbar .nav-links a:hover::after { width: 100%; }
+
+/* ===== Hero ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  padding: 2rem;
+  overflow: hidden;
+}
+.hero-video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: opacity 1.2s ease;
+}
+.hero-video.fading { opacity: 0; }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay-hero);
+  z-index: 1;
+}
+[data-theme="light"] .hero-overlay {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.hero-content { position: relative; z-index: 2; max-width: 900px; padding: 0 2rem; }
+.hero-eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.4em;
+  background: var(--grad-subtle);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s forwards;
+}
+.hero-title {
+  font-size: clamp(3.5rem, 9vw, 7.5rem);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1.2s 0.4s forwards;
+  line-height: 1.05;
+}
+.hero-title span {
+  font-weight: 600;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-roles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.6s forwards;
+}
+.hero-role {
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+.role-primary {
+  font-size: 1.05rem;
+  font-weight: 400;
+  background: var(--grad-subtle);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.2em;
+}
+.role-secondary {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--text-dim);
+}
+.role-tertiary {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--text-very-faint);
+  letter-spacing: 0.18em;
+}
+.hero-slogan {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--text-subtle);
+  letter-spacing: 0.25em;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.9s forwards;
+}
+.hero-tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.9s forwards;
+}
+.hero-tags span {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid var(--border-hover);
+  border-radius: 100px;
+  color: var(--text-link);
+  transition: all 0.4s;
+}
+.hero-tags span:hover {
+  border-color: var(--border-focus);
+  color: var(--text-primary);
+  background: var(--bg-tag);
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-shadow);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  opacity: 0;
+  animation: fadeUp 1s 1.2s forwards;
+}
+.hero-scroll::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--text-subtle), transparent);
+  margin: 0.5rem auto 0;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Section Common ===== */
+.section { padding: 7rem 3rem; }
+.section-header {
+  text-align: center;
+  margin-bottom: 4.5rem;
+}
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--divider);
+  margin: 1.2rem auto;
+}
+
+/* ===== Work Section ===== */
+.work-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 3.5rem;
+}
+.filter-btn {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  padding: 0.5rem 1.6rem;
+  border: 1px solid var(--border-muted);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+  transition: all 0.35s;
+  font-family: inherit;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--border-active-strong);
+  color: var(--text-primary);
+  background: var(--border-dim);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.work-card {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.55s;
+  aspect-ratio: 16/9;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.35);
+}
+.work-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px var(--border-muted);
+  border-color: var(--border-visible);
+}
+.work-card-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s;
+}
+.work-card:hover .work-card-media { transform: scale(1.04); }
+.work-card:hover .work-card-media { opacity: 0.35; }
+.work-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.4s;
+  background: var(--overlay-card);
+}
+.work-card:hover .work-card-overlay { opacity: 1; }
+.work-card-type {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--text-link);
+  margin-bottom: 0.6rem;
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--border-visible);
+  border-radius: 100px;
+  width: fit-content;
+}
+.work-card-title {
+  font-size: 1.15rem;
+  font-weight: 300;
+  background: var(--grad-medium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+.work-card-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.pos-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s ease, filter 0.5s;
+  filter: brightness(0.78);
+}
+/* 图片封面容器使用纵向比例，避免裁切 */
+.pos-cover.has-image {
+  aspect-ratio: 3/4;
+}
+.positioning-card:hover .pos-cover-img {
+  transform: scale(1.05);
+  filter: brightness(1.0);
+}
+
+.work-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--placeholder-bg);
+  color: var(--placeholder-color);
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+}
+
+/* ===== About Section ===== */
+.about-section { background: var(--bg-section); }
+.about-block { max-width: 1200px; margin: 0 auto 7rem; }
+.about-block:last-child { margin-bottom: 0; }
+
+/* Bio Row */
+.about-bio-row {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.about-portrait {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 2px;
+  filter: grayscale(20%);
+  transition: filter 0.5s;
+}
+.about-portrait:hover { filter: grayscale(0%); }
+.about-bio-text h3 {
+  font-size: 2.2rem;
+  font-weight: 200;
+  background: var(--grad-major);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+}
+.about-bio-text p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.95;
+  margin-bottom: 1.2rem;
+}
+.about-bio-text .highlight {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+/* Identity / Expertise / Philosophy / Achievement */
+.about-identity-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  margin-top: 2.5rem;
+}
+.identity-card {
+  padding: 1.5rem;
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  background: var(--bg-card-hover);
+  transition: border-color 0.4s;
+}
+.identity-card:hover {
+  border-color: var(--border-visible);
+}
+.identity-card .card-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--text-subtle);
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+}
+.identity-card .card-text {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* Positioning */
+.about-positioning {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+.positioning-card {
+  text-align: center;
+  padding: 0;
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.4s, background 0.4s, transform 0.4s, box-shadow 0.4s;
+  background: var(--bg-card-hover);
+}
+.positioning-card:hover {
+  border-color: var(--border-active);
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+.pos-cover {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: var(--bg-pos-cover);
+  position: relative;
+}
+.pos-cover video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pos-cover-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-subtle);
+  background: var(--pos-placeholder);
+}
+.pos-card-body {
+  padding: 2.5rem 1.5rem;
+}
+.positioning-card h4 {
+  font-size: 1.15rem;
+  font-weight: 400;
+  background: var(--grad-medium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+}
+.positioning-card .pos-core {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.8rem;
+}
+.positioning-card .pos-goal {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* Tagline row */
+.about-tagline {
+  text-align: center;
+  padding: 5rem 0 2.5rem;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 3rem;
+}
+.about-tagline .big-quote {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 200;
+  color: var(--text-primary);
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+.about-tagline .big-quote span {
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.about-tagline .sub-quote {
+  font-size: 0.85rem;
+  color: var(--text-very-faint);
+  letter-spacing: 0.15em;
+}
+
+/* Pillars */
+.about-pillars-section h3 {
+  font-size: 1.6rem;
+  font-weight: 250;
+  background: var(--grad-major);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin-bottom: 3.5rem;
+}
+.pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem 3.5rem;
+}
+.pillar-item {
+  border-left: 1px solid var(--pillar-border);
+  padding-left: 1.8rem;
+  transition: border-color 0.4s;
+}
+.pillar-item:hover {
+  border-left-color: var(--text-shadow);
+}
+.pillar-item h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  background: var(--grad-medium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.8rem;
+}
+.pillar-item .pillar-desc {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.pillar-subs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+.pillar-subs span {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--bg-tag);
+  border: 1px solid var(--border-muted);
+  border-radius: 100px;
+  color: var(--text-muted);
+}
+.pillar-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.pillar-detail-item {
+  padding: 0.8rem;
+  border: 1px solid var(--border-dim);
+  border-radius: 2px;
+  background: var(--bg-card-hover);
+}
+.pillar-detail-item h5 {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-link);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.04em;
+}
+.pillar-detail-item p {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  line-height: 1.65;
+}
+
+/* Works Showcase */
+.about-showcase {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.showcase-item {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  transition: transform 0.4s;
+}
+.showcase-item:hover {
+  transform: translateY(-4px);
+}
+.showcase-item video {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 2px;
+  margin-bottom: 0.8rem;
+  filter: brightness(var(--showcase-brightness));
+  transition: filter 0.4s, transform 0.4s;
+}
+.showcase-item:hover video {
+  filter: brightness(var(--showcase-brightness-hover));
+  transform: translateY(-4px);
+}
+.showcase-item .show-name {
+  font-size: 0.85rem;
+  background: var(--grad-medium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.3rem;
+}
+.showcase-item .show-tags {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+
+
+/* Future Vision */
+.vision-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.vision-item {
+  padding: 1.8rem;
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+}
+.vision-item:hover {
+  border-color: var(--border-active);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.vision-item h4 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: var(--grad-medium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.6rem;
+}
+.vision-item p {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* ===== CTA Tagline ===== */
+.cta-tagline {
+  text-align: center;
+  padding: 4rem 2rem 1rem;
+  border-top: 1px solid var(--border-light);
+}
+.cta-tagline .cta-main {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 300;
+  background: var(--grad-subtle);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.06em;
+  max-width: 700px;
+  margin: 0 auto 0.5rem;
+}
+.cta-tagline .cta-sub {
+  font-size: 0.75rem;
+  color: var(--text-very-faint);
+  letter-spacing: 0.15em;
+}
+
+/* ===== Contact Section ===== */
+.contact-section { text-align: center; background: var(--bg-section); }
+.contact-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.contact-card {
+  flex: 0 0 200px;
+  padding: 2rem 1.5rem 1.8rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  background: var(--bg-card-hover);
+  transition: border-color 0.4s, background 0.4s, transform 0.4s, box-shadow 0.4s;
+  text-align: center;
+}
+.contact-card:hover {
+  border-color: var(--border-active);
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+.contact-card .contact-icon {
+  display: block;
+  margin: 0 auto 1.2rem;
+}
+.contact-card .contact-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--contact-icon-stroke);
+  fill: none;
+  stroke-width: 1.5;
+  transition: stroke 0.4s;
+}
+.contact-card:hover .contact-icon svg { stroke: var(--contact-icon-hover); }
+.contact-card .contact-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  margin-bottom: 0.6rem;
+}
+.contact-card .contact-value {
+  font-size: 1.05rem;
+  background: var(--grad-subtle);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+
+/* ===== Footer ===== */
+.footer {
+  text-align: center;
+  padding: 3.5rem;
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-body);
+}
+.footer p { font-size: 0.72rem; color: var(--text-subtle); letter-spacing: 0.08em; }
+
+/* ===== Mobile Menu ===== */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-modal);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s, visibility 0.35s;
+}
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-card {
+  background: var(--bg-modal);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  max-width: 860px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(24px);
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+.modal-overlay.active .modal-card {
+  transform: translateY(0);
+}
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-visible);
+  color: var(--text-tertiary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: all 0.35s;
+  z-index: 2010;
+}
+.modal-close:hover {
+  background: var(--border-visible);
+  border-color: var(--border-active);
+  color: var(--text-primary);
+}
+.modal-video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+}
+.modal-video-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.modal-info {
+  padding: 2rem 2.5rem;
+}
+.modal-info .modal-title {
+  font-size: 1.5rem;
+  font-weight: 250;
+  background: var(--grad-medium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+}
+.modal-info .modal-type {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  margin-bottom: 1.2rem;
+  display: inline-block;
+  padding: 0.25rem 0.9rem;
+  border: 1px solid var(--border-visible);
+  border-radius: 100px;
+}
+.modal-info .modal-desc {
+  font-size: 0.92rem;
+  color: var(--text-link);
+  line-height: 1.9;
+}
+
+
+/* ===== Thumbnail Selector ===== */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 12px rgba(160,140,255,0.25), 0 0 24px rgba(160,140,255,0.1), 0 4px 20px rgba(0,0,0,0.5); }
+  50% { box-shadow: 0 0 20px rgba(180,160,255,0.45), 0 0 36px rgba(160,140,255,0.2), 0 4px 20px rgba(0,0,0,0.5); }
+}
+@keyframes breathe {
+  0%, 100% { transform: translateY(-5px) scale(1.08); }
+  50% { transform: translateY(-5px) scale(1.11); }
+}
+
+.thumb-panel {
+  position: absolute;
+  bottom: 7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  padding: 8px 10px;
+  background: rgba(0,0,0,0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+}
+.thumb-item {
+  position: relative;
+  width: 60px;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  overflow: visible;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 1.5px solid var(--border-visible);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  background: #0a0a0a;
+}
+.thumb-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.12);
+}
+.thumb-item:hover::after { opacity: 1; }
+.thumb-item:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-4px) scale(1.12);
+  z-index: 5;
+}
+.thumb-item.active {
+  border-color: var(--border-focus-strong);
+  box-shadow: 0 0 14px rgba(160,140,255,0.3), 0 0 30px rgba(160,140,255,0.15), 0 4px 20px rgba(0,0,0,0.5);
+  transform: translateY(-5px) scale(1.08);
+  animation: pulseGlow 2.4s ease-in-out infinite, breathe 3.6s ease-in-out infinite;
+}
+.thumb-item video,
+.thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  filter: brightness(0.6);
+  transition: filter 0.4s, border-radius 0.3s;
+}
+.thumb-item:hover video,
+.thumb-item:hover img,
+.thumb-item.active video,
+.thumb-item.active img {
+  filter: brightness(0.95);
+}
+
+.thumb-label {
+  display: none;
+}
+
+/* Mobile: horizontal scroll at bottom of hero */
+@media (max-width: 768px) {
+  .navbar { padding: 1.2rem 1.5rem; }
+  .navbar .nav-links { display: none; }
+  .navbar .logo { font-size: 1.1rem; }
+  .mobile-menu-btn { display: block; }
+  .section { padding: 4.5rem 1.5rem; }
+  .section-header { margin-bottom: 3rem; }
+  .section-title { font-size: clamp(1.8rem, 7vw, 2.5rem) !important; }
+  .section-subtitle { font-size: 0.88rem; }
+
+  /* Hero */
+  .hero { min-height: 100vh; min-height: 100dvh; padding: 1rem; }
+  .hero-content { padding: 0 1rem; }
+  .hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.3em; margin-bottom: 1rem; }
+  .hero-title { font-size: clamp(2.4rem, 11vw, 4rem); margin-bottom: 1.5rem; line-height: 1.1; }
+  .hero-roles { gap: 0.3rem; margin-bottom: 1.5rem; }
+  .role-primary { font-size: 0.9rem; }
+  .role-secondary { font-size: 0.82rem; }
+  .role-tertiary { font-size: 0.75rem; }
+  .hero-slogan { font-size: 0.75rem; margin-bottom: 1.5rem; letter-spacing: 0.15em; }
+  .hero-tags { gap: 0.8rem; margin-bottom: 2rem; }
+  .hero-tags span { font-size: 0.7rem; padding: 0.3rem 0.9rem; }
+  .hero-scroll { bottom: 1rem; font-size: 0.62rem; }
+
+  /* Thumb panel */
+  .thumb-panel {
+    right: 0; left: 0;
+    top: auto; bottom: 5.5rem;
+    transform: none;
+    flex-direction: row;
+    gap: 10px;
+    max-height: none;
+    overflow-y: auto;
+    overflow-x: auto;
+    padding: 10px 1rem;
+    justify-content: flex-start;
+    border-radius: 0;
+    background: rgba(0,0,0,0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .thumb-panel::-webkit-scrollbar { display: none; }
+  .thumb-item {
+    width: 52px;
+    flex-shrink: 0;
+    border-radius: 6px;
+  }
+  .thumb-item video,
+  .thumb-item img { border-radius: 6px; }
+  .thumb-item:hover { transform: translateY(-3px) scale(1.12); }
+  .thumb-item.active { transform: translateY(-4px) scale(1.08); }
+  @keyframes breathe {
+    0%, 100% { transform: translateY(-4px) scale(1.08); }
+    50% { transform: translateY(-4px) scale(1.12); }
+  }
+
+  /* Work */
+  .work-grid { grid-template-columns: 1fr; gap: 1.5rem; padding: 0; }
+  .work-filters {
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0 0.5rem 1rem;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 2.5rem;
+  }
+  .work-filters::-webkit-scrollbar { display: none; }
+  .filter-btn { padding: 0.45rem 1.2rem; font-size: 0.72rem; white-space: nowrap; flex-shrink: 0; }
+
+  /* Modal */
+  .modal-overlay { padding: 0; align-items: stretch; }
+  .modal-card {
+    max-width: 100%;
+    max-height: 100vh;
+    max-height: 100dvh;
+    border-radius: 0;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .modal-video-wrap { aspect-ratio: 16/9; flex-shrink: 0; }
+  .modal-info { padding: 1.5rem; overflow-y: auto; flex: 1; }
+  .modal-info .modal-title { font-size: 1.2rem; }
+  .modal-close { top: 0.5rem; right: 0.5rem; width: 36px; height: 36px; font-size: 1.1rem; z-index: 2020; }
+
+  /* About */
+  .about-bio-row { grid-template-columns: 1fr; gap: 2rem; }
+  .about-portrait { max-width: 200px; margin: 0 auto; }
+  .about-bio-text h3 { font-size: 1.8rem; }
+  .about-identity-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+  .about-positioning { grid-template-columns: 1fr !important; }
+  .pillar-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .pillar-detail-grid { grid-template-columns: 1fr 1fr; }
+  .about-showcase { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .vision-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-block { margin-bottom: 3.5rem; }
+  .about-tagline { padding: 3rem 0 1.5rem; }
+  .about-tagline .big-quote { font-size: clamp(1.3rem, 5vw, 2rem); }
+  .pos-cover { aspect-ratio: 16/9; }
+  .pos-card-body { padding: 1.8rem 1.2rem; }
+  .showcase-item video { aspect-ratio: 16/9; }
+
+  /* Contact */
+  .contact-grid { gap: 1.2rem; }
+  .contact-card { flex: 0 0 100%; max-width: 280px; margin: 0 auto; padding: 1.8rem 1.5rem 1.5rem; }
+  .contact-card .contact-icon svg { width: 32px; height: 32px; }
+  .contact-card .contact-value { font-size: 1rem; }
+
+  /* CTA */
+  .cta-tagline { padding: 3rem 1.5rem 0.5rem; }
+
+  /* Footer */
+  .footer { padding: 2.5rem 1.5rem; }
+}
+@media (max-width: 480px) {
+  .section { padding: 3.5rem 1.2rem; }
+  .section-header { margin-bottom: 2.5rem; }
+  .section-title { font-size: clamp(1.6rem, 8vw, 2rem) !important; }
+  .section-subtitle { font-size: 0.82rem; }
+  .section-tag { font-size: 0.62rem; }
+
+  /* Navbar */
+  .navbar { padding: 1rem 1.2rem; }
+  .navbar .logo { font-size: 1rem; }
+
+  /* Hero */
+  .hero { min-height: 100vh; min-height: 100dvh; }
+  .hero-title { font-size: clamp(2rem, 13vw, 3rem); }
+  .hero-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; }
+  .role-primary { font-size: 0.82rem; }
+  .role-secondary { font-size: 0.75rem; }
+  .role-tertiary { font-size: 0.7rem; }
+  .hero-slogan { font-size: 0.7rem; letter-spacing: 0.12em; }
+  .hero-tags { gap: 0.5rem; }
+  .hero-tags span { font-size: 0.65rem; padding: 0.25rem 0.7rem; }
+  .hero-roles { gap: 0.25rem; margin-bottom: 1.2rem; }
+
+  /* Thumb panel */
+  .thumb-panel { bottom: 4.5rem; padding: 8px 0.6rem; gap: 6px; }
+  .thumb-item { width: 44px; border-radius: 5px; }
+  .thumb-item video,
+  .thumb-item img { border-radius: 5px; }
+
+  /* Work */
+  .work-grid { gap: 1.2rem; }
+  .work-card-overlay { padding: 1.2rem; }
+  .work-card-title { font-size: 1rem; }
+  .work-card-desc { font-size: 0.72rem; }
+  .work-filters { gap: 0.4rem; padding: 0 0.3rem 0.8rem; }
+  .filter-btn { padding: 0.35rem 0.9rem; font-size: 0.68rem; }
+
+  /* Modal */
+  .modal-info .modal-title { font-size: 1.1rem; }
+  .modal-info .modal-desc { font-size: 0.82rem; }
+  .modal-close { top: 0.4rem; right: 0.4rem; width: 32px; height: 32px; font-size: 1rem; }
+
+  /* About */
+  .about-portrait { max-width: 160px; }
+  .about-bio-text h3 { font-size: 1.5rem; }
+  .about-bio-text p { font-size: 0.85rem; }
+  .about-identity-grid { grid-template-columns: 1fr; }
+  .identity-card { padding: 1.2rem; }
+  .about-showcase { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+  .showcase-item .show-name { font-size: 0.75rem; }
+  .showcase-item .show-tags { font-size: 0.65rem; }
+  .vision-grid { grid-template-columns: 1fr; }
+  .pillar-detail-grid { grid-template-columns: 1fr; }
+  .pos-card-body { padding: 1.5rem 1rem; }
+  .positioning-card h4 { font-size: 1rem; }
+  .about-tagline .big-quote { font-size: clamp(1.2rem, 5vw, 1.8rem); }
+  .about-tagline .sub-quote { font-size: 0.72rem; }
+
+  /* Contact */
+  .contact-grid { gap: 1rem; }
+  .contact-card { max-width: 100%; padding: 1.5rem 1.2rem 1.3rem; }
+  .contact-card .contact-icon svg { width: 28px; height: 28px; }
+  .contact-card .contact-label { font-size: 0.78rem; }
+  .contact-card .contact-value { font-size: 0.95rem; }
+
+  /* CTA */
+  .cta-tagline { padding: 2.5rem 1rem 0.5rem; }
+  .cta-tagline .cta-main { font-size: 0.88rem; }
+  .cta-tagline .cta-sub { font-size: 0.66rem; }
+
+  /* Footer */
+  .footer { padding: 2rem 1rem; }
+  .footer p { font-size: 0.66rem; }
+
+  /* Divider */
+  .divider { margin: 0.8rem auto; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ===== Navbar ===== -->
+<nav class="navbar" id="navbar">
+  <div class="logo">MAILE</div>
+  <div class="nav-links">
+    <a href="#home">首页</a>
+    <a href="#work">作品</a>
+    <a href="#about">关于</a>
+    <a href="#contact">联系</a>
+  </div>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换主题">
+      <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+    </button>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">&#9776;</button>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="home">
+  <video class="hero-video" id="heroVideo" muted playsinline></video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">AI FILMMAKER &amp; VISUAL STORYTELLER</p>
+    <h1 class="hero-title"><span>麦乐导演</span></h1>
+    <div class="hero-roles">
+      <p class="hero-role role-primary">AI影视导演</p>
+      <p class="hero-role role-secondary">AI视觉创作者</p>
+      <p class="hero-role role-tertiary">品牌视觉内容创作者</p>
+    </div>
+    <p class="hero-slogan">以 AI 重新定义影像叙事</p>
+  </div>
+  
+  <!-- Thumbnail Selector -->
+  <div class="thumb-panel" id="thumbPanel">
+  </div>
+
+  <div class="hero-scroll">向下滚动探索作品</div>
+</section>
+
+<!-- ===== Work Section ===== -->
+<section class="section" id="work">
+  <div class="section-header">
+    <p class="section-tag">Selected Works</p>
+    <h2 class="section-title">作品展示</h2>
+    <div class="divider"></div>
+    <p class="section-subtitle">跨越短剧、漫剧、微电影、广告片与品牌视觉，每一帧皆为AI影像叙事的探索印记</p>
+  </div>
+
+  <div class="work-filters">
+    <button class="filter-btn active" onclick="filterWorks('all', this)">全部作品</button>
+    <button class="filter-btn" onclick="filterWorks('AI短剧', this)">AI短剧</button>
+    <button class="filter-btn" onclick="filterWorks('AI漫剧', this)">AI漫剧</button>
+    <button class="filter-btn" onclick="filterWorks('AI微电影', this)">AI微电影</button>
+    <button class="filter-btn" onclick="filterWorks('AI广告片', this)">AI广告片</button>
+    <button class="filter-btn" onclick="filterWorks('品牌视觉', this)">品牌视觉</button>
+  </div>
+
+  <div class="work-grid" id="workGrid">
+
+    <!-- AI短剧 -->
+    <div class="work-card" data-category="AI短剧" data-id="short-1">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/01_AI短剧/AI短剧_乡村悬疑_荒村_第1集.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI短剧 · 悬疑惊悚</span>
+        <h3 class="work-card-title">荒村</h3>
+        <p class="work-card-desc">乡村悬疑题材，氛围营造与节奏把控突出，展现AI在悬疑叙事中的独特表现力。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI短剧" data-id="short-2">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/01_AI短剧/AI短剧_家庭伦理_绝户二胎_第1集.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI短剧 · 家庭伦理</span>
+        <h3 class="work-card-title">绝户二胎</h3>
+        <p class="work-card-desc">聚焦社会议题的家庭伦理剧，密集情感冲突驱动强节奏叙事。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI短剧" data-id="short-3">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/01_AI短剧/AI短剧_玄学职场_玄学HR_第1集.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI短剧 · 玄学职场</span>
+        <h3 class="work-card-title">玄学HR</h3>
+        <p class="work-card-desc">玄学与职场碰撞出的创新题材，反转不断，钩子密集。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI短剧" data-id="short-4">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/01_AI短剧/AI短剧_系统甜宠_这系统有毒_第1集.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI短剧 · 系统甜宠</span>
+        <h3 class="work-card-title">这系统有毒</h3>
+        <p class="work-card-desc">系统流甜宠题材，轻快节奏与高密度爽点设计，精准命中目标受众。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI短剧" data-id="short-5">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/01_AI短剧/AI短剧_都市情感_前任9海王攻略_第1集.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI短剧 · 都市情感</span>
+        <h3 class="work-card-title">前任9海王攻略</h3>
+        <p class="work-card-desc">都市情感爽剧，快节奏叙事与强情绪冲突，打造高传播力内容。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI短剧" data-id="short-6">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/01_AI短剧/AI短剧_都市爱情_一千零一次告白_第1集.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI短剧 · 都市爱情</span>
+        <h3 class="work-card-title">一千零一次告白</h3>
+        <p class="work-card-desc">都市甜宠爱情线，细腻情感与AI视觉美学的融合之作。</p>
+      </div>
+    </div>
+
+    <!-- AI漫剧 -->
+    <div class="work-card" data-category="AI漫剧" data-id="manju-1">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_二次元萌系_猫娘.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI漫剧 · 二次元萌系</span>
+        <h3 class="work-card-title">猫娘</h3>
+        <p class="work-card-desc">萌系二次元风格AI漫剧，画风细腻，角色塑造灵动可爱。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI漫剧" data-id="manju-2">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_修仙喜剧_我的灵根有点大.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI漫剧 · 修仙喜剧</span>
+        <h3 class="work-card-title">我的灵根有点大</h3>
+        <p class="work-card-desc">修仙+喜剧的破圈组合，节奏明快笑点密集，AI漫改标杆之作。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI漫剧" data-id="manju-3">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_修仙成长_凡骨.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI漫剧 · 修仙成长</span>
+        <h3 class="work-card-title">凡骨</h3>
+        <p class="work-card-desc">凡人修仙成长线，扎实的叙事节奏与AI画风的高度统一。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI漫剧" data-id="manju-4">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_修仙轻喜剧_修仙界来了个义乌崽.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI漫剧 · 修仙轻喜剧</span>
+        <h3 class="work-card-title">修仙界来了个义乌崽</h3>
+        <p class="work-card-desc">脑洞大开的修仙轻喜剧，以商业思维搅动修仙世界，创意与娱乐性兼具。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI漫剧" data-id="manju-5">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_反派修仙_我是大反派凭什么讲道理.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI漫剧 · 反派修仙</span>
+        <h3 class="work-card-title">我是大反派凭什么讲道理</h3>
+        <p class="work-card-desc">反派视角修仙爽文改编，反套路叙事引爆追看欲望。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI漫剧" data-id="manju-6">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_奇幻剑修_剑神.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI漫剧 · 奇幻剑修</span>
+        <h3 class="work-card-title">剑神</h3>
+        <p class="work-card-desc">奇幻剑修题材，战斗场面AI生成表现出色，视觉冲击力强。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI漫剧" data-id="manju-7">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_奇幻器灵_全球器灵.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI漫剧 · 奇幻器灵</span>
+        <h3 class="work-card-title">全球器灵</h3>
+        <p class="work-card-desc">器灵世界观宏大展开，融合全球多元文化元素的创新之作。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI漫剧" data-id="manju-8">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_灵异修仙_我在灵界逼疯亿万恶诡.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI漫剧 · 灵异修仙</span>
+        <h3 class="work-card-title">我在灵界逼疯亿万恶诡</h3>
+        <p class="work-card-desc">灵异+修仙混合题材，强悬念和高能反转贯穿全篇。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI漫剧" data-id="manju-9">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_美漫恋爱_哥哥别吻我.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI漫剧 · 美漫恋爱</span>
+        <h3 class="work-card-title">哥哥别吻我</h3>
+        <p class="work-card-desc">美漫画风恋爱题材，AI对异国画风的精准还原与情感表达的突破。</p>
+      </div>
+    </div>
+
+    <!-- AI微电影 -->
+    <div class="work-card" data-category="AI微电影" data-id="film-1">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/03_AI微电影/AI微电影_东方奇幻_月鳞绮纪.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI微电影 · 东方奇幻</span>
+        <h3 class="work-card-title">月鳞绮纪</h3>
+        <p class="work-card-desc">东方美学与虚幻引擎技术融合的视觉大片，电影级画面质感。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI微电影" data-id="film-2">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/03_AI微电影/AI微电影_古装动作_骑马片段.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI微电影 · 古装动作</span>
+        <h3 class="work-card-title">骑马片段</h3>
+        <p class="work-card-desc">古装动作场景AI生成实验，动态镜头与动作流畅度的突破性尝试。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI微电影" data-id="film-3">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/03_AI微电影/AI微电影_谍战番外_潜伏电视剧番外.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI微电影 · 谍战番外</span>
+        <h3 class="work-card-title">潜伏电视剧番外</h3>
+        <p class="work-card-desc">经典谍战IP的AI番外篇，致敬经典的同时探索AI影像的新可能。</p>
+      </div>
+    </div>
+
+    <!-- AI广告片 -->
+    <div class="work-card" data-category="AI广告片" data-id="ad-1">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/04_AI广告片/AI广告片_TK平台_试稿样片.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI广告片 · TK平台试稿</span>
+        <h3 class="work-card-title">TK平台试稿样片</h3>
+        <p class="work-card-desc">面向海外TK平台的商业广告试稿，展示AI在跨文化品牌传播中的应用。</p>
+      </div>
+    </div>
+
+    <div class="work-card" data-category="AI广告片" data-id="ad-2">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/04_AI广告片/AI广告片_医疗场景_医院宣传片.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">AI广告片 · 医疗场景</span>
+        <h3 class="work-card-title">医院宣传片</h3>
+        <p class="work-card-desc">医疗行业的品牌宣传片，专业克制的影像语言与AI高效制作的双赢。</p>
+      </div>
+    </div>
+
+    <!-- 品牌视觉 -->
+    <div class="work-card" data-category="品牌视觉" data-id="brand-1">
+      <video class="work-card-media" src="https://maile666.oss-cn-beijing.aliyuncs.com/05_品牌视觉/品牌视觉_城市形象_城市宣传片.mp4" muted loop preload="metadata"></video>
+      <div class="work-card-overlay">
+        <span class="work-card-type">品牌视觉 · 城市形象</span>
+        <h3 class="work-card-title">城市宣传片</h3>
+        <p class="work-card-desc">城市品牌视觉大片，以AI影像语言诠释城市精神与文化底蕴。</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== Work Modal ===== -->
+<div class="modal-overlay" id="workModal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-video-wrap">
+      <video id="modalVideo" controls playsinline><source src=""></video>
+    </div>
+    <div class="modal-info">
+      <h3 class="modal-title" id="modalTitle"></h3>
+      <span class="modal-type" id="modalType"></span>
+      <p class="modal-desc" id="modalDesc"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== About Section ===== -->
+<section class="section about-section" id="about">
+  <div class="section-header">
+    <p class="section-tag">About</p>
+    <h2 class="section-title">关于麦乐</h2>
+    <div class="divider"></div>
+  </div>
+
+  <!-- Block 1: Bio + Portrait -->
+  <div class="about-block">
+    <div class="about-bio-row">
+      <img class="about-portrait" src="https://maile666.oss-cn-beijing.aliyuncs.com/作品网站/about-portrait.jpg" alt="麦乐导演">
+      <div class="about-bio-text">
+        <h3>AI时代的影像工匠</h3>
+        <p>麦乐导演，本名马伊乐。深耕于<span class="highlight">真人实拍与AI视觉融合</span>的前沿赛道，是业内公认的<span class="highlight">AI短剧商业化创作标杆</span>。致力于探索AI影像在商业变现上的无限可能，兼具技术前瞻性与商业落地能力。</p>
+        <p>深谙短剧流量逻辑与漫改叙事美学，具备从<span class="highlight">剧本拆解、分镜把控到全流程制作</span>的成熟能力。始终将市场验证置于首位，以高密度爽点、强情绪节奏和统一视觉风格，打造高传播、高转化的AI影像作品。</p>
+        <div class="about-identity-grid">
+          <div class="identity-card">
+            <div class="card-label">IDENTITY 身份</div>
+            <div class="card-text">AI短剧商业化创作标杆、实战派先锋，兼具技术前瞻性与商业落地能力</div>
+          </div>
+          <div class="identity-card">
+            <div class="card-label">EXPERTISE 专长</div>
+            <div class="card-text">深谙短剧流量逻辑与漫改叙事美学，从剧本拆解到全流程制作</div>
+          </div>
+          <div class="identity-card">
+            <div class="card-label">PHILOSOPHY 理念</div>
+            <div class="card-text">市场验证置于首位，以高密度爽点与强情绪节奏打造高转化作品</div>
+          </div>
+          <div class="identity-card">
+            <div class="card-label">ACHIEVEMENT 成就</div>
+            <div class="card-text">多部作品跻身各大主流平台热播榜与飙升榜前列</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block 2: Tagline -->
+  <div class="about-tagline">
+    <p class="big-quote"><span>故事为王 &middot; Seedance 2.0</span></p>
+    <p class="sub-quote">AI FILMMAKER &mdash; STORY FIRST, TECH EMPOWERED</p>
+  </div>
+
+  <!-- Block 3: Core Positioning -->
+  <div class="about-block">
+    <div class="section-header" style="margin-bottom: 2.5rem;">
+      <p class="section-tag">Positioning</p>
+      <h2 class="section-title" style="font-size: 2rem;">核心定位：AI短剧实战导演</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="about-positioning">
+      <div class="positioning-card">
+        <h4>AI导向</h4>
+        <p class="pos-core">创作以AI技术为核心驱动力</p>
+        <p class="pos-goal">探索AI在影像叙事中的无限可能，而非仅做辅助</p>
+      </div>
+      <div class="positioning-card">
+        <h4>短剧赛道</h4>
+        <p class="pos-core">专注微短剧高增长内容形式</p>
+        <p class="pos-goal">深耕垂直领域，致力成为该赛道的领军人物</p>
+      </div>
+      <div class="positioning-card">
+        <h4>实战派</h4>
+        <p class="pos-core">极度重视作品市场表现与商业价值</p>
+        <p class="pos-goal">坚持以结果为导向，追求可量化的数据与商业成功</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block 4: Four Pillars -->
+  <div class="about-block">
+    <div class="about-pillars-section">
+      <h3>核心能力：四大创作支柱</h3>
+      <div class="pillar-grid">
+        <div class="pillar-item">
+          <h4>01 AI技术融合</h4>
+          <p class="pillar-desc">精通AI影像全流程应用，将AI视觉与真人表演有机结合，打破技术与艺术的壁垒，创造独特的"真人漫剧"风格，实现降本增效与艺术质感的双赢。</p>
+          <div class="pillar-subs">
+            <span>AI画风调校</span><span>AI影像生成</span><span>真人漫改适配</span>
+          </div>
+          <div class="pillar-detail-grid">
+            <div class="pillar-detail-item">
+              <h5>AI画风调校</h5>
+              <p>根据题材精准调校AI视觉风格，确保画面独特性，平衡艺术感与市场审美。</p>
+            </div>
+            <div class="pillar-detail-item">
+              <h5>AI影像生成</h5>
+              <p>熟练运用各类AI工具高效生成高质量素材，解决传统拍摄周期长、成本高的痛点。</p>
+            </div>
+            <div class="pillar-detail-item">
+              <h5>真人漫改适配</h5>
+              <p>实现真人实拍与AI视觉元素的无缝衔接，增强故事表现力，打造独特视觉冲击力。</p>
+            </div>
+          </div>
+        </div>
+        <div class="pillar-item">
+          <h4>02 短剧叙事精通</h4>
+          <p class="pillar-desc">精准定位目标受众情感需求，在短时间内密集设置能够引发用户愉悦感的"爽点"；擅长运用逻辑自洽的反转持续制造悬念，在每集结尾设置高吸引力"钩子"引导追看。</p>
+          <div class="pillar-subs">
+            <span>密集爽点设计</span><span>反转剧情构建</span><span>情绪钩子搭建</span>
+          </div>
+          <div class="pillar-detail-grid">
+            <div class="pillar-detail-item">
+              <h5>密集爽点设计</h5>
+              <p>精准定位目标受众情感需求，在短时间内密集设置引发愉悦感和满足感的"爽点"，快速建立情绪共鸣。</p>
+            </div>
+            <div class="pillar-detail-item">
+              <h5>反转剧情构建</h5>
+              <p>擅长运用逻辑自洽且出人意料的剧情反转，持续制造悬念与惊喜，打破观众预期，牢牢抓住好奇心。</p>
+            </div>
+            <div class="pillar-detail-item">
+              <h5>情绪钩子搭建</h5>
+              <p>通过强烈情绪冲突和快节奏叙事，在每集结尾设置高吸引力"钩子"，制造期待感，有效引导用户持续追看。</p>
+            </div>
+          </div>
+        </div>
+        <div class="pillar-item">
+          <h4>03 全题材驾驭</h4>
+          <p class="pillar-desc">具备驾驭多种题材的能力，作品库覆盖悬疑、甜宠、修仙、奇幻、谍战等当前短剧市场最主流赛道，展示宽广创作视野与强大剧本分析能力，灵活捕捉市场风向。</p>
+          <div class="pillar-subs">
+            <span>悬疑惊悚</span><span>都市甜宠</span><span>修仙奇幻</span><span>谍战番外</span><span>家庭伦理</span>
+          </div>
+        </div>
+        <div class="pillar-item">
+          <h4>04 高效执行落地</h4>
+          <p class="pillar-desc">具备突出的现场调度、团队协作和拍摄统筹能力，迅速捕捉市场热点并快速完成剧本开发与项目启动，将AI技术与传统影视制作流程结合，探索出高效的AI短剧工业化拍摄模式。</p>
+          <div class="pillar-subs">
+            <span>快速响应</span><span>统筹能力</span><span>工业化思维</span>
+          </div>
+          <div class="pillar-detail-grid">
+            <div class="pillar-detail-item">
+              <h5>快速响应</h5>
+              <p>迅速捕捉市场热点，快速完成剧本开发和项目启动，抢占市场先机。</p>
+            </div>
+            <div class="pillar-detail-item">
+              <h5>统筹能力</h5>
+              <p>擅长协调演员、拍摄、后期等各环节，确保项目在预算和周期内高质量完成。</p>
+            </div>
+            <div class="pillar-detail-item">
+              <h5>工业化思维</h5>
+              <p>将AI技术与传统影视制作流程结合，探索出高效的AI短剧工业化拍摄模式。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block 5: AI漫剧代表作 -->
+  <div class="about-block">
+    <div class="section-header" style="margin-bottom: 2rem;">
+      <p class="section-tag">Representative Works</p>
+      <h2 class="section-title" style="font-size: 2rem;">AI漫剧代表作</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle" style="max-width: 700px;">风格多样、屡创佳绩，AI技术与叙事能力结合的集中体现</p>
+    </div>
+    <div class="about-showcase">
+      <div class="showcase-item">
+        <video src="https://maile666.oss-cn-beijing.aliyuncs.com/01_AI短剧/AI短剧_都市情感_前任9海王攻略_第1集.mp4" muted loop preload="metadata"></video>
+        <p class="show-name">前任9海王攻略</p>
+        <p class="show-tags">都市情感 &middot; 快节奏 &middot; 强情绪</p>
+      </div>
+      <div class="showcase-item">
+        <video src="https://maile666.oss-cn-beijing.aliyuncs.com/02_AI漫剧/AI漫剧_修仙喜剧_我的灵根有点大.mp4" muted loop preload="metadata"></video>
+        <p class="show-name">我的灵根有点大</p>
+        <p class="show-tags">修仙 &middot; 喜剧 &middot; 破圈组合</p>
+      </div>
+      <div class="showcase-item">
+        <video src="https://maile666.oss-cn-beijing.aliyuncs.com/03_AI微电影/AI微电影_谍战番外_潜伏电视剧番外.mp4" muted loop preload="metadata"></video>
+        <p class="show-name">潜伏电视剧番外</p>
+        <p class="show-tags">谍战 &middot; 经典IP &middot; AI番外</p>
+      </div>
+      <div class="showcase-item">
+        <video src="https://maile666.oss-cn-beijing.aliyuncs.com/03_AI微电影/AI微电影_东方奇幻_月鳞绮纪.mp4" muted loop preload="metadata"></video>
+        <p class="show-name">月鳞绮纪</p>
+        <p class="show-tags">东方奇幻 &middot; 虚幻引擎 &middot; 视觉大片</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block 6: Classic IP & Other Works -->
+  <div class="about-block">
+    <div class="section-header" style="margin-bottom: 2rem;">
+      <p class="section-tag">Beyond Short Drama</p>
+      <h2 class="section-title" style="font-size: 2rem;">经典影视IP解说 & 商业影像</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle" style="max-width: 700px;">用AI重塑经典，覆盖多种风格的商业宣传片与实验性短剧</p>
+    </div>
+    <div class="about-positioning" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="positioning-card">
+        <div class="pos-cover has-image"><img src="https://maile666.oss-cn-beijing.aliyuncs.com/作品网站/cover-yinshen.png" alt="隐身的名字" class="pos-cover-img"></div>
+        <div class="pos-card-body">
+        <h4>隐身的名字</h4>
+        <p class="pos-core">腾讯视频 &middot; 悬疑剧解说</p>
+        <p class="pos-goal">倪妮 / 闫妮主演，杨阳导演作品，以AI视角深度解读悬疑剧集</p>
+        </div>
+      </div>
+      <div class="positioning-card">
+        <div class="pos-cover has-image"><img src="https://maile666.oss-cn-beijing.aliyuncs.com/作品网站/cover-aiqing-meiyou-shenhua.png" alt="爱情没有神话" class="pos-cover-img"></div>
+        <div class="pos-card-body">
+        <h4>爱情没有神话</h4>
+        <p class="pos-core">腾讯视频 &middot; 情感剧解说</p>
+        <p class="pos-goal">唐嫣 / 赵又廷领衔主演，亦舒原著，秦雯编剧</p>
+        </div>
+      </div>
+      <div class="positioning-card">
+        <div class="pos-cover has-image"><img src="https://maile666.oss-cn-beijing.aliyuncs.com/作品网站/cover-fumu-aiqing.jpg" alt="父母爱情" class="pos-cover-img"></div>
+        <div class="pos-card-body">
+        <h4>父母爱情</h4>
+        <p class="pos-core">经典年代剧解说</p>
+        <p class="pos-goal">郭涛 / 梅婷主演，孔笙导演，献给全天下的平凡爱情</p>
+        </div>
+      </div>
+      <div class="positioning-card">
+        <div class="pos-cover has-image"><img src="https://maile666.oss-cn-beijing.aliyuncs.com/作品网站/cover-dahanwangchao.png" alt="大汉王朝" class="pos-cover-img"></div>
+        <div class="pos-card-body">
+        <h4>大汉王朝</h4>
+        <p class="pos-core">央视 &middot; 大型汉史正剧解说</p>
+        <p class="pos-goal">继《汉武大帝》后又一部重磅汉史正剧，以AI视角解读帝王史诗</p>
+        </div>
+      </div>
+    </div>
+    <div class="about-positioning" style="grid-template-columns: repeat(2, 1fr); margin-top: 1.5rem;">
+      <div class="positioning-card">
+        <div class="pos-cover has-image">
+          <img src="https://maile666.oss-cn-beijing.aliyuncs.com/作品网站/cover-yuelinqiji.jpg" alt="月鳞绮纪" class="pos-cover-img">
+        </div>
+        <div class="pos-card-body">
+        <h4>月鳞绮纪 宣传片</h4>
+        <p class="pos-core">东方美学 &middot; 仙侠题材 &middot; 虚幻引擎</p>
+        <p class="pos-goal">为热门仙侠IP量身定制的视觉大片，将传统东方美学与现代虚幻引擎表现力融合，呈现电影级瑰丽场景</p>
+        </div>
+      </div>
+      <div class="positioning-card">
+        <div class="pos-cover has-image"><img src="https://maile666.oss-cn-beijing.aliyuncs.com/作品网站/cover-laozi-miaohui.png" alt="老子庙会" class="pos-cover-img"></div>
+        <div class="pos-card-body">
+        <h4>老子庙会 文化宣传片</h4>
+        <p class="pos-core">国学经典 &middot; 哲学思辨 &middot; 历史厚重感</p>
+        <p class="pos-goal">以极具质感的镜头语言诠释老子哲学思想，沉稳克制的叙事节奏配合考究服化道与光影，获文化界高度认可</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block 7: Future Vision -->
+  <div class="about-block">
+    <div class="section-header" style="margin-bottom: 2rem;">
+      <p class="section-tag">Vision</p>
+      <h2 class="section-title" style="font-size: 2rem;">未来展望</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">站在AI内容创作的潮头，随着AI技术从"工具"向"伙伴"进化</p>
+    </div>
+    <div class="vision-grid">
+      <div class="vision-item">
+        <h4>深耕AI短剧赛道</h4>
+        <p>持续探索AI短剧的叙事边界和商业潜力，打造标杆性作品</p>
+      </div>
+      <div class="vision-item">
+        <h4>探索互动叙事</h4>
+        <p>前瞻性布局弱互动乃至强互动的未来叙事形态，提升用户参与感</p>
+      </div>
+      <div class="vision-item">
+        <h4>个性化内容生成</h4>
+        <p>利用AI技术深度挖掘用户偏好，提供千人千面的个性化内容体验</p>
+      </div>
+      <div class="vision-item">
+        <h4>创造双重价值作品</h4>
+        <p>坚持创作兼具思想性、艺术性与高商业价值的优质作品，实现口碑与流量双赢</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Tagline -->
+  <div class="cta-tagline">
+    <p class="cta-main">期待与品牌方、平台方、内容伙伴共创AI影像的未来</p>
+    <p class="cta-sub">BUILDING THE FUTURE OF AI VISUAL STORYTELLING TOGETHER</p>
+  </div>
+</section>
+
+<!-- ===== Contact Section ===== -->
+<section class="section contact-section" id="contact">
+  <div class="section-header">
+    <p class="section-tag">Contact</p>
+    <h2 class="section-title">合作联系</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <span class="contact-icon">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      </span>
+      <p class="contact-label">手机</p>
+      <p class="contact-value">17637109951</p>
+    </div>
+    <div class="contact-card">
+      <span class="contact-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 9h8M8 13h6" stroke-linecap="round"/></svg>
+      </span>
+      <p class="contact-label">微信</p>
+      <p class="contact-value">mayile917</p>
+    </div>
+    <div class="contact-card">
+      <span class="contact-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/></svg>
+      </span>
+      <p class="contact-label">抖音</p>
+      <p class="contact-value">Aigc917</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <p>&copy; 2024 麦乐导演 MAILE DIRECTOR. All Rights Reserved.</p>
+</footer>
+
+<script>
+// ===== Filter Works =====
+function filterWorks(category, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('.work-card');
+  cards.forEach(card => {
+    if (category === 'all' || card.dataset.category === category) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+// ===== Video Hover Play (Work Cards & Showcase) =====
+document.querySelectorAll('.work-card, .showcase-item').forEach(el => {
+  const video = el.querySelector('video');
+  if (!video) return;
+  el.addEventListener('mouseenter', () => {
+    video.currentTime = 0;
+    video.play().catch(() => {});
+  });
+  el.addEventListener('mouseleave', () => {
+    video.pause();
+    video.currentTime = 0;
+  });
+});
+
+// ===== Work Card Click → Modal =====
+const modal = document.getElementById('workModal');
+const modalVideo = document.getElementById('modalVideo');
+const modalTitle = document.getElementById('modalTitle');
+const modalType = document.getElementById('modalType');
+const modalDesc = document.getElementById('modalDesc');
+
+document.querySelectorAll('.work-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const video = card.querySelector('video');
+    const src = video ? video.getAttribute('src') : '';
+    const title = card.querySelector('.work-card-title').textContent;
+    const type = card.querySelector('.work-card-type').textContent;
+    const desc = card.querySelector('.work-card-desc').textContent;
+
+    modalVideo.querySelector('source').setAttribute('src', src);
+    modalVideo.load();
+    modalTitle.textContent = title;
+    modalType.textContent = type;
+    modalDesc.textContent = desc;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    modalVideo.play();
+  });
+});
+
+function closeModal() {
+  modalVideo.pause();
+  modalVideo.querySelector('source').removeAttribute('src');
+  modalVideo.load();
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+modal.addEventListener('click', function(e) {
+  if (e.target === modal) closeModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+});
+
+// ===== Hero Video Rotation =====
+(function() {
+  const videos = [
+    '../01_AI短剧/AI短剧_乡村悬疑_荒村_第1集.mp4',
+    '../01_AI短剧/AI短剧_家庭伦理_绝户二胎_第1集.mp4',
+    '../01_AI短剧/AI短剧_玄学职场_玄学HR_第1集.mp4',
+    '../01_AI短剧/AI短剧_系统甜宠_这系统有毒_第1集.mp4',
+    '../01_AI短剧/AI短剧_都市情感_前任9海王攻略_第1集.mp4',
+    '../01_AI短剧/AI短剧_都市爱情_一千零一次告白_第1集.mp4',
+    '../02_AI漫剧/AI漫剧_二次元萌系_猫娘.mp4',
+    '../02_AI漫剧/AI漫剧_修仙喜剧_我的灵根有点大.mp4',
+    '../02_AI漫剧/AI漫剧_修仙成长_凡骨.mp4',
+    '../02_AI漫剧/AI漫剧_修仙轻喜剧_修仙界来了个义乌崽.mp4',
+    '../02_AI漫剧/AI漫剧_反派修仙_我是大反派凭什么讲道理.mp4',
+    '../02_AI漫剧/AI漫剧_奇幻剑修_剑神.mp4',
+    '../02_AI漫剧/AI漫剧_奇幻器灵_全球器灵.mp4',
+    '../02_AI漫剧/AI漫剧_灵异修仙_我在灵界逼疯亿万恶诡.mp4',
+    '../02_AI漫剧/AI漫剧_美漫恋爱_哥哥别吻我.mp4',
+    '../03_AI微电影/AI微电影_东方奇幻_月鳞绮纪.mp4',
+    '../03_AI微电影/AI微电影_古装动作_骑马片段.mp4',
+    '../03_AI微电影/AI微电影_谍战番外_潜伏电视剧番外.mp4',
+    '../04_AI广告片/AI广告片_TK平台_试稿样片.mp4',
+    '../04_AI广告片/AI广告片_医疗场景_医院宣传片.mp4',
+    '../05_品牌视觉/品牌视觉_城市形象_城市宣传片.mp4'
+  ];
+  const heroVideo = document.getElementById('heroVideo');
+  let currentIndex = -1;
+  let isFading = false;
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const playlist = shuffle(videos);
+  let pos = 0;
+
+  function playNext() {
+    if (isFading) return;
+    isFading = true;
+    heroVideo.classList.add('fading');
+    setTimeout(function() {
+      heroVideo.src = playlist[pos];
+      heroVideo.load();
+      heroVideo.play().then(function() {
+        heroVideo.classList.remove('fading');
+        isFading = false;
+      }).catch(function() {
+        heroVideo.classList.remove('fading');
+        isFading = false;
+      });
+      pos = (pos + 1) % playlist.length;
+    }, 1200);
+  }
+
+  // Expose playlist for thumbnail sync
+  window.__heroPlaylist = playlist;
+  window.__heroPos = pos;
+
+  heroVideo.addEventListener('ended', playNext);
+  heroVideo.addEventListener('error', function() { pos = (pos + 1) % playlist.length; setTimeout(playNext, 500); });
+
+  // After playing next, sync thumbnail
+  var origPlayNext = playNext;
+  playNext = function() {
+    origPlayNext();
+    if (window.setActiveThumb && playlist[(pos - 1 + playlist.length) % playlist.length]) {
+      var justPlayed = playlist[(pos - 1 + playlist.length) % playlist.length];
+      setTimeout(function() { window.setActiveThumb(justPlayed); }, 300);
+    }
+  };
+
+  // Start
+  heroVideo.src = playlist[pos];
+  pos = (pos + 1) % playlist.length;
+  window.__heroPos = pos;
+  heroVideo.load();
+  heroVideo.play().then(function() {
+    if (window.setActiveThumb) {
+      setTimeout(function() { window.setActiveThumb(playlist[(pos - 1 + playlist.length) % playlist.length]); }, 600);
+    }
+  }).catch(function() { setTimeout(playNext, 500); });
+})();
+
+
+// ===== Thumbnail Selector =====
+(function() {
+  var thumbVideos = [
+    { src: '../01_AI短剧/AI短剧_乡村悬疑_荒村_第1集.mp4', label: '荒村' },
+    { src: '../01_AI短剧/AI短剧_家庭伦理_绝户二胎_第1集.mp4', label: '绝户二胎' },
+    { src: '../01_AI短剧/AI短剧_玄学职场_玄学HR_第1集.mp4', label: '玄学HR' },
+    { src: '../01_AI短剧/AI短剧_系统甜宠_这系统有毒_第1集.mp4', label: '这系统有毒' },
+    { src: '../01_AI短剧/AI短剧_都市情感_前任9海王攻略_第1集.mp4', label: '前任9海王攻略' },
+    { src: '../01_AI短剧/AI短剧_都市爱情_一千零一次告白_第1集.mp4', label: '一千零一次告白' },
+    { src: '../02_AI漫剧/AI漫剧_二次元萌系_猫娘.mp4', label: '猫娘' },
+    { src: '../02_AI漫剧/AI漫剧_修仙喜剧_我的灵根有点大.mp4', label: '我的灵根有点大' },
+    { src: '../02_AI漫剧/AI漫剧_修仙成长_凡骨.mp4', label: '凡骨' },
+    { src: '../02_AI漫剧/AI漫剧_修仙轻喜剧_修仙界来了个义乌崽.mp4', label: '义乌崽' },
+    { src: '../02_AI漫剧/AI漫剧_反派修仙_我是大反派凭什么讲道理.mp4', label: '我是大反派' },
+    { src: '../02_AI漫剧/AI漫剧_奇幻剑修_剑神.mp4', label: '剑神' },
+    { src: '../02_AI漫剧/AI漫剧_奇幻器灵_全球器灵.mp4', label: '全球器灵' },
+    { src: '../02_AI漫剧/AI漫剧_灵异修仙_我在灵界逼疯亿万恶诡.mp4', label: '逼疯亿万恶诡' },
+    { src: '../02_AI漫剧/AI漫剧_美漫恋爱_哥哥别吻我.mp4', label: '哥哥别吻我' },
+    { src: '../03_AI微电影/AI微电影_东方奇幻_月鳞绮纪.mp4', label: '月鳞绮纪' },
+    { src: '../03_AI微电影/AI微电影_古装动作_骑马片段.mp4', label: '骑马片段' },
+    { src: '../03_AI微电影/AI微电影_谍战番外_潜伏电视剧番外.mp4', label: '潜伏番外' },
+    { src: '../04_AI广告片/AI广告片_TK平台_试稿样片.mp4', label: 'TK平台试稿' },
+    { src: '../04_AI广告片/AI广告片_医疗场景_医院宣传片.mp4', label: '医院宣传片' },
+    { src: '../05_品牌视觉/品牌视觉_城市形象_城市宣传片.mp4', label: '城市宣传片' }
+  ];
+
+  var thumbPanel = document.getElementById('thumbPanel');
+  var heroVideo = document.getElementById('heroVideo');
+  var currentThumbSrc = null;
+  var thumbItems = [];
+
+  // Create source-to-index map for the rotation playlist
+  var sourceToIndex = {};
+  for (var i = 0; i < thumbVideos.length; i++) {
+    sourceToIndex[thumbVideos[i].src] = i;
+  }
+
+  // Build thumbnails
+  thumbVideos.forEach(function(item, idx) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'thumb-item';
+    wrapper.setAttribute('data-src', item.src);
+    wrapper.title = item.label;
+
+    var vid = document.createElement('video');
+    vid.src = item.src;
+    vid.muted = true;
+    vid.preload = 'metadata';
+    vid.playsInline = true;
+    // Seek to first frame once metadata loads
+    vid.addEventListener('loadedmetadata', function() {
+      vid.currentTime = 0.1;
+    });
+    vid.addEventListener('seeked', function() {
+      // Pause at first frame
+      vid.pause();
+    });
+    // Fallback for some browsers: force frame
+    vid.addEventListener('loadeddata', function() {
+      vid.currentTime = 0.1;
+    });
+    wrapper.appendChild(vid);
+
+    wrapper.addEventListener('click', function() {
+      switchToVideo(item.src, idx);
+    });
+
+    thumbPanel.appendChild(wrapper);
+    thumbItems.push(wrapper);
+  });
+
+  function switchToVideo(src, idx) {
+    if (currentThumbSrc === src) return;
+    currentThumbSrc = src;
+
+    // Update active state
+    thumbItems.forEach(function(t) { t.classList.remove('active'); });
+    thumbItems[idx].classList.add('active');
+
+    // Fade out hero video
+    heroVideo.classList.add('fading');
+    setTimeout(function() {
+      heroVideo.src = src;
+      heroVideo.load();
+      heroVideo.play().then(function() {
+        heroVideo.classList.remove('fading');
+      }).catch(function() {
+        heroVideo.classList.remove('fading');
+      });
+
+      // Sync rotation playlist by setting the position to after this video
+      // We need to find this video in the rotation playlist and set pos
+      var playlist = window.__heroPlaylist;
+      if (playlist) {
+        for (var p = 0; p < playlist.length; p++) {
+          if (playlist[p] === src) {
+            window.__heroPos = (p + 1) % playlist.length;
+            break;
+          }
+        }
+      }
+    }, 600);
+
+    // Scroll thumbnail into view
+    thumbItems[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Expose for rotation sync
+  window.__heroPlaylist = null;
+  window.__heroPos = 0;
+  window.setActiveThumb = function(src) {
+    var idx = sourceToIndex[src];
+    if (idx === undefined) return;
+    currentThumbSrc = src;
+    thumbItems.forEach(function(t) { t.classList.remove('active'); });
+    thumbItems[idx].classList.add('active');
+    thumbItems[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+})();
+
+
+// ===== Navbar Scroll Effect =====
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  if (window.scrollY > 50) {
+    navbar.style.background = 'var(--nav-bg-scrolled)';
+    navbar.style.backdropFilter = 'blur(20px)';
+    navbar.style.borderBottom = '1px solid var(--nav-border)';
+  } else {
+    navbar.style.background = 'transparent';
+    navbar.style.backdropFilter = 'none';
+    navbar.style.borderBottom = 'none';
+  }
+});
+
+// ===== Mobile Menu =====
+let mobileMenuOpen = false;
+function toggleMobileMenu() {
+  const links = document.querySelector('.nav-links');
+  mobileMenuOpen = !mobileMenuOpen;
+  if (mobileMenuOpen) {
+    links.style.display = 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'absolute';
+    links.style.top = '100%';
+    links.style.left = '0';
+    links.style.right = '0';
+    links.style.background = 'rgba(10,10,10,0.98)';
+    links.style.padding = '1.5rem';
+    links.style.gap = '1.2rem';
+    links.style.backdropFilter = 'blur(20px)';
+    links.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+  } else {
+    links.style.display = 'none';
+  }
+}
+
+// ===== Theme Toggle =====
+(function() {
+  var KEY = 'maile-theme';
+  var toggle = document.getElementById('themeToggle');
+  var html = document.documentElement;
+
+  function setTheme(theme) {
+    if (theme === 'light') {
+      html.setAttribute('data-theme', 'light');
+    } else {
+      html.removeAttribute('data-theme');
+    }
+    localStorage.setItem(KEY, theme);
+  }
+
+  function toggleTheme() {
+    var current = html.getAttribute('data-theme');
+    setTheme(current === 'light' ? 'dark' : 'light');
+  }
+
+  // Init: load saved preference
+  var saved = localStorage.getItem(KEY);
+  if (saved === 'light') {
+    setTheme('light');
+  }
+
+  // Expose toggle function
+  window.toggleTheme = toggleTheme;
+})();
+
+</script>
+
+</body>
+</html>
