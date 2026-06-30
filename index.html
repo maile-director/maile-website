@@ -2144,27 +2144,27 @@ document.addEventListener('keydown', function(e) {
 // ===== Thumbnail Selector =====
 (function() {
   var thumbVideos = [
-    { src: '../01_AI短剧/AI短剧_乡村悬疑_荒村_第1集.mp4', label: '荒村' },
-    { src: '../01_AI短剧/AI短剧_家庭伦理_绝户二胎_第1集.mp4', label: '绝户二胎' },
-    { src: '../01_AI短剧/AI短剧_玄学职场_玄学HR_第1集.mp4', label: '玄学HR' },
-    { src: '../01_AI短剧/AI短剧_系统甜宠_这系统有毒_第1集.mp4', label: '这系统有毒' },
-    { src: '../01_AI短剧/AI短剧_都市情感_前任9海王攻略_第1集.mp4', label: '前任9海王攻略' },
-    { src: '../01_AI短剧/AI短剧_都市爱情_一千零一次告白_第1集.mp4', label: '一千零一次告白' },
-    { src: '../02_AI漫剧/AI漫剧_二次元萌系_猫娘.mp4', label: '猫娘' },
-    { src: '../02_AI漫剧/AI漫剧_修仙喜剧_我的灵根有点大.mp4', label: '我的灵根有点大' },
-    { src: '../02_AI漫剧/AI漫剧_修仙成长_凡骨.mp4', label: '凡骨' },
-    { src: '../02_AI漫剧/AI漫剧_修仙轻喜剧_修仙界来了个义乌崽.mp4', label: '义乌崽' },
-    { src: '../02_AI漫剧/AI漫剧_反派修仙_我是大反派凭什么讲道理.mp4', label: '我是大反派' },
-    { src: '../02_AI漫剧/AI漫剧_奇幻剑修_剑神.mp4', label: '剑神' },
-    { src: '../02_AI漫剧/AI漫剧_奇幻器灵_全球器灵.mp4', label: '全球器灵' },
-    { src: '../02_AI漫剧/AI漫剧_灵异修仙_我在灵界逼疯亿万恶诡.mp4', label: '逼疯亿万恶诡' },
-    { src: '../02_AI漫剧/AI漫剧_美漫恋爱_哥哥别吻我.mp4', label: '哥哥别吻我' },
-    { src: '../03_AI微电影/AI微电影_东方奇幻_月鳞绮纪.mp4', label: '月鳞绮纪' },
-    { src: '../03_AI微电影/AI微电影_古装动作_骑马片段.mp4', label: '骑马片段' },
-    { src: '../03_AI微电影/AI微电影_谍战番外_潜伏电视剧番外.mp4', label: '潜伏番外' },
-    { src: '../04_AI广告片/AI广告片_TK平台_试稿样片.mp4', label: 'TK平台试稿' },
-    { src: '../04_AI广告片/AI广告片_医疗场景_医院宣传片.mp4', label: '医院宣传片' },
-    { src: '../05_品牌视觉/品牌视觉_城市形象_城市宣传片.mp4', label: '城市宣传片' }
+    { src: '01_AI短剧/AI短剧_乡村悬疑_荒村_第1集.mp4', label: '荒村' },
+    { src: '01_AI短剧/AI短剧_家庭伦理_绝户二胎_第1集.mp4', label: '绝户二胎' },
+    { src: '01_AI短剧/AI短剧_玄学职场_玄学HR_第1集.mp4', label: '玄学HR' },
+    { src: '01_AI短剧/AI短剧_系统甜宠_这系统有毒_第1集.mp4', label: '这系统有毒' },
+    { src: '01_AI短剧/AI短剧_都市情感_前任9海王攻略_第1集.mp4', label: '前任9海王攻略' },
+    { src: '01_AI短剧/AI短剧_都市爱情_一千零一次告白_第1集.mp4', label: '一千零一次告白' },
+    { src: '02_AI漫剧/AI漫剧_二次元萌系_猫娘.mp4', label: '猫娘' },
+    { src: '02_AI漫剧/AI漫剧_修仙喜剧_我的灵根有点大.mp4', label: '我的灵根有点大' },
+    { src: '02_AI漫剧/AI漫剧_修仙成长_凡骨.mp4', label: '凡骨' },
+    { src: '02_AI漫剧/AI漫剧_修仙轻喜剧_修仙界来了个义乌崽.mp4', label: '义乌崽' },
+    { src: '02_AI漫剧/AI漫剧_反派修仙_我是大反派凭什么讲道理.mp4', label: '我是大反派' },
+    { src: '02_AI漫剧/AI漫剧_奇幻剑修_剑神.mp4', label: '剑神' },
+    { src: '02_AI漫剧/AI漫剧_奇幻器灵_全球器灵.mp4', label: '全球器灵' },
+    { src: '02_AI漫剧/AI漫剧_灵异修仙_我在灵界逼疯亿万恶诡.mp4', label: '逼疯亿万恶诡' },
+    { src: '02_AI漫剧/AI漫剧_美漫恋爱_哥哥别吻我.mp4', label: '哥哥别吻我' },
+    { src: '03_AI微电影/AI微电影_东方奇幻_月鳞绮纪.mp4', label: '月鳞绮纪' },
+    { src: '03_AI微电影/AI微电影_古装动作_骑马片段.mp4', label: '骑马片段' },
+    { src: '03_AI微电影/AI微电影_谍战番外_潜伏电视剧番外.mp4', label: '潜伏番外' },
+    { src: '04_AI广告片/AI广告片_TK平台_试稿样片.mp4', label: 'TK平台试稿' },
+    { src: '04_AI广告片/AI广告片_医疗场景_医院宣传片.mp4', label: '医院宣传片' },
+    { src: '05_品牌视觉/品牌视觉_城市形象_城市宣传片.mp4', label: '城市宣传片' }
   ];
 
   var thumbPanel = document.getElementById('thumbPanel');
@@ -2257,7 +2257,6 @@ document.addEventListener('keydown', function(e) {
     currentThumbSrc = src;
     thumbItems.forEach(function(t) { t.classList.remove('active'); });
     thumbItems[idx].classList.add('active');
-    thumbItems[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   };
 })();
 
