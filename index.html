@@ -2244,8 +2244,7 @@ document.addEventListener('keydown', function(e) {
       }
     }, 600);
 
-    // Scroll thumbnail into view
-    thumbItems[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Scroll thumbnail into view — REMOVED: caused unwanted scroll during auto-rotation
   }
 
   // Expose for rotation sync
